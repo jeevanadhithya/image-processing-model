@@ -232,9 +232,12 @@ def init_model():
     # IMAGE PREPROCESSING
     # ==========================================================================
 
+    target_dim = int(os.getenv("INFERENCE_SIZE", "768" if device == "cpu" else "1024"))
+    logger.info(f"[Artisera] Configuring BiRefNet inference size: {target_dim}x{target_dim} on {device.upper()}")
+
     state["transform"] = transforms.Compose([
         transforms.Resize(
-            (1024, 1024)
+            (target_dim, target_dim)
         ),
         transforms.ToTensor(),
         transforms.Normalize(
